@@ -28,7 +28,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
@@ -47,5 +47,5 @@ dependencies {
 //todo
     compile 'com.aliyun.ams:alicloud-android-push:3.1.2'
     implementation 'com.google.code.gson:gson:2.8.5'
-    compile 'com.aliyun.ams:alicloud-android-third-push:3.0.5@aar'
+    compile 'com.aliyun.ams:alicloud-android-third-push:3.0.6@aar'
 }

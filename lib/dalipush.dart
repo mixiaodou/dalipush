@@ -7,6 +7,7 @@ class Dalipush {
     if (_instance == null) {
       final MethodChannel methodChannel = const MethodChannel('dalipush');
       final EventChannel eventChannel = const EventChannel('dalipush_event');
+      print("Dalipush Constructor");
       _instance = new Dalipush.private(methodChannel, eventChannel);
     }
     return _instance;
@@ -39,6 +40,76 @@ class Dalipush {
     await _methodChannel.invokeMethod('getDeviceToken');
     return token;
   }
+
+  Future<bool> clearNotifications() async {
+    return _methodChannel.invokeMethod('getDeviceToken');
+  }
+
+  Future<bool> closeDoNotDisturbMode() async {
+    return _methodChannel.invokeMethod('closeDoNotDisturbMode');
+  }
+
+  Future<String> addAlias(String alias) async {
+    return _methodChannel.invokeMethod('closeDoNotDisturbMode', <String, String>{
+      'alias': alias
+    });
+  }
+
+  Future<String> removeAlias(String alias) async {
+    return _methodChannel.invokeMethod('closeDoNotDisturbMode', <String, String>{
+      'alias': alias
+    });
+  }
+
+  Future<String> bindAccount(String account) async {
+    return _methodChannel.invokeMethod('bindAccount', <String, String>{
+      'account': account
+    });
+  }
+
+  Future<String> bindPhoneNumber(String phoneNumber) async {
+    return _methodChannel.invokeMethod('bindPhoneNumber', <String, String>{
+      'phoneNumber': phoneNumber
+    });
+  }
+
+  Future<String> bindTag(int target, List<String> tags, String alias) async {
+    return _methodChannel.invokeMethod('bindTag', <String, dynamic>{
+      'target': target,
+      'tags': tags,
+      'alias': alias
+    });
+  }
+
+  Future<String> unbindTag(int target, List<String> tags, String alias) async {
+    return _methodChannel.invokeMethod('bindTag', <String, dynamic>{
+      'target': target,
+      'tags': tags,
+      'alias': alias
+    });
+  }
+
+  Future<String> unbindAccount() async {
+    return _methodChannel.invokeMethod('unbindAccount');
+  }
+
+  Future<String> unbindPhoneNumber() async {
+    return _methodChannel.invokeMethod('unbindPhoneNumber');
+  }
+
+  Future<String> checkPushChannelStatus() async {
+    return _methodChannel.invokeMethod('checkPushChannelStatus');
+  }
+
+  Future<String> turnOffPushChannel() async {
+    return _methodChannel.invokeMethod('turnOffPushChannel');
+  }
+
+  Future<String> turnOnPushChannel() async {
+    return _methodChannel.invokeMethod('turnOnPushChannel');
+  }
+
+
 
   Stream<dynamic> get onMessage {
     if (_listener == null) {
