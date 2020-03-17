@@ -1,4 +1,5 @@
 #import <Flutter/Flutter.h>
-
-@interface DalipushPlugin : NSObject<FlutterPlugin>
+#import <CloudPushSDK/CloudPushSDK.h>
+API_AVAILABLE(ios(10.0))
+@interface DalipushPlugin : NSObject<FlutterPlugin, UNUserNotificationCenterDelegate>
 @end

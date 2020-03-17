@@ -21,7 +21,7 @@ class Dalipush {
 
   static Dalipush _instance;
 
-  Stream<dynamic> _listener;
+  Stream<Message> _listener;
 
   Future<String> get platformVersion async {
     final String version =
@@ -111,16 +111,49 @@ class Dalipush {
 
 
 
-  Stream<dynamic> get onMessage {
+  Stream<Message> get onMessage {
     if (_listener == null) {
       _listener = _eventChannel
           .receiveBroadcastStream()
-          .map((dynamic event) => _parseMsg(event));
+          .map((event) => _parseMsg(event));
     }
     return _listener;
   }
 
-  dynamic _parseMsg(event) {
-    return event;
+  Message _parseMsg(event) {
+    print("收到了消息");
+    print(event.runtimeType);
+    print(event);
+    return Message.fromJson(event);
+  }
+}
+
+enum MessageEventType {
+  onNotification,
+  onMessage,
+  onNotificationOpened,
+  onNotificationClickedWithNoAction,
+  onNotificationReceivedInApp,
+  onNotificationRemoved
+}
+
+class Message {
+  final String event;
+  final String title;
+  final String summary;
+  final Map<String, dynamic> extraMap;
+
+  Message(this.event, this.title, this.summary, this.extraMap);
+
+  MessageEventType get eventType => MessageEventType.values.firstWhere((e) => e.toString() == 'MessageEventType.' + event);
+
+  get uri {
+    if (extraMap.containsKey("uri") && extraMap['uri'].trim() != "") {
+      return extraMap['uri'];
+    }
+    return null;
+  }
+  factory Message.fromJson(json) {
+    return Message(json["event"] as String, json["title"] as String, json["summary"] as String, Map.from(json["extraMap"]) );
   }
 }
