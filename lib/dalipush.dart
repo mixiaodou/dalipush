@@ -7,7 +7,6 @@ class Dalipush {
     if (_instance == null) {
       final MethodChannel methodChannel = const MethodChannel('dalipush');
       final EventChannel eventChannel = const EventChannel('dalipush_event');
-      print("Dalipush Constructor");
       _instance = new Dalipush.private(methodChannel, eventChannel);
     }
     return _instance;
@@ -121,9 +120,6 @@ class Dalipush {
   }
 
   Message _parseMsg(event) {
-    print("收到了消息");
-    print(event.runtimeType);
-    print(event);
     return Message.fromJson(event);
   }
 }
