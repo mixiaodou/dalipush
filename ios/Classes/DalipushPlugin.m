@@ -31,6 +31,7 @@
 }
 
 UNNotificationPresentationOptions _notificationPresentationOption = UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge;
+NSMutableArray *events = nil;
 
 
 - (void)addAlias:(NSString *)alias result:(FlutterResult)result {
@@ -151,6 +152,16 @@ UNNotificationPresentationOptions _notificationPresentationOption = UNNotificati
 - (FlutterError* _Nullable)onListenWithArguments:(id _Nullable)arguments
                                        eventSink:(FlutterEventSink)eventSink{
     self.eventSink = eventSink;
+    if (events != nil) {
+        NSEnumerator* enumerateor =  [events objectEnumerator];
+
+        NSMutableDictionary* result;
+        while (result = [enumerateor nextObject]) {
+            self.eventSink(result);
+        }
+        [events removeAllObjects];
+        events = nil;
+    }
     return nil;
 }
 
@@ -375,7 +386,7 @@ UNNotificationPresentationOptions _notificationPresentationOption = UNNotificati
     } else {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         dict[@"title"] = title;
-        dict[@"body"] = body;
+        dict[@"summary"] = body;
         dict[@"event"] = @"onMessage";
         self.eventSink(dict);
     }
@@ -424,19 +435,34 @@ UNNotificationPresentationOptions _notificationPresentationOption = UNNotificati
         result[@"subtitle"] = subtitle;
     }
 
-    result[@"badge"] = @(badge);
+//    if (badge != nil) {
+//        result[@"badge"] = @(badge);
+//    }
 
 
     if (request.identifier != nil) {
         result[@"messageId"] = request.identifier;
     }
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    dict[@"title"] = title;
-    dict[@"summary"] = body;
-    dict[@"event"] = event;
-    dict[@"extraMap"] = userInfo;
+    result[@"event"] = event;
+    
+    if (userInfo != nil) {
+        result[@"extraMap"] = userInfo;
+    }
+
+    if (![NSThread isMainThread] && self.eventSink != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.eventSink(result);
+        });
+    } else if (self.eventSink != nil) {
+        self.eventSink(result);
+    } else {
+        if (events == nil) {
+            events = [[NSMutableArray alloc] init];
+        }
+        [events addObject:result];
+    }
 //    NSString *jsonStr = [[dict mj_JSONString] copy];
-    self.eventSink(dict);
+    
 
 //    [_methodChannel invokeMethod:@"onNotification" arguments:result];
 }
