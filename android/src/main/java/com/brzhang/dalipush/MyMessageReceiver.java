@@ -25,7 +25,7 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", summary);
         hashMap.put("event", "onNotification");
         hashMap.put("extraMap", extraMap);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", cPushMessage.getContent());
         hashMap.put("event", "onMessage");
         hashMap.put("extraMap", map);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", summary);
         hashMap.put("event", "onNotificationOpened");
         hashMap.put("extraMap", map);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", summary);
         hashMap.put("event", "onNotificationOpened");
         hashMap.put("extraMap", map);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", summary);
         hashMap.put("event", "onNotificationOpened");
         hashMap.put("extraMap", map);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 
     @Override
@@ -98,6 +98,6 @@ public class MyMessageReceiver extends MessageReceiver {
         hashMap.put("summary", "");
         hashMap.put("event", "onNotificationOpened");
         hashMap.put("extraMap", map);
-        DalipushPlugin.getInstance().getEventSink().success(hashMap);
+        DalipushPlugin.getInstance().sink(hashMap);
     }
 }

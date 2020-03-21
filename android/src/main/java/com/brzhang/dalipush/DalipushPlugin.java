@@ -14,6 +14,8 @@ import android.graphics.BitmapFactory;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import io.flutter.plugin.common.EventChannel;
@@ -30,6 +32,8 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
 
     private static DalipushPlugin dalipushPlugin;
 
+    private ArrayList<Map> events = new ArrayList<Map>();
+
     private EventChannel.EventSink eventSink;
 
     public static DalipushPlugin getInstance() {
@@ -39,6 +43,7 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
     public EventChannel.EventSink getEventSink() {
         return this.eventSink;
     }
+
 
     /**
      * Plugin registration.
@@ -297,12 +302,34 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
     public void onListen(Object o, EventChannel.EventSink eventSink) {
         Log.e("DalipushPlugin", "onListen() called with: o = [" + o + "], eventSink = [" + eventSink + "]");
         this.eventSink = eventSink;
+        if (!events.isEmpty()) {
+            for(Map m : events) {
+                eventSink.success(m);
+            }
+            events.clear();
+        }
     }
 
     @Override
     public void onCancel(Object o) {
+        Log.e("DalipushPlugin", "onCancel() called with: o = [" + o + "], eventSink = [" + eventSink + "]");
+        this.eventSink = null;
 
     }
 
+    public void  sink(Map map) {
+        if (this.eventSink != null) {
+            try{
+                this.eventSink.success(map);
+            } catch (Exception e) {
+                Log.e("DalipushPlugin", "eventSink call exception" + e.getMessage());
+                events.add(map);
+            }
+        } else {
+            Log.e("DalipushPlugin", "eventSink is Null");
+            events.add(map);
+        }
+
+    }
 
 }

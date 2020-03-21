@@ -166,6 +166,7 @@ NSMutableArray *events = nil;
 }
 
 - (FlutterError* _Nullable)onCancelWithArguments:(id _Nullable)arguments{
+    self.eventSink = nil;
     return nil;
 }
 
