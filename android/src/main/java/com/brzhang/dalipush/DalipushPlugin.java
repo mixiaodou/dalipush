@@ -326,7 +326,6 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
                 events.add(map);
             }
         } else {
-            Log.e("DalipushPlugin", "eventSink is Null");
             events.add(map);
         }
 
