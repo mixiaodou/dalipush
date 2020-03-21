@@ -66,7 +66,7 @@ public class MyMessageReceiver extends MessageReceiver {
         Map hashMap = new HashMap();
         hashMap.put("title", title);
         hashMap.put("summary", summary);
-        hashMap.put("event", "onNotificationOpened");
+        hashMap.put("event", "onNotificationClickedWithNoAction");
         hashMap.put("extraMap", map);
         DalipushPlugin.getInstance().sink(hashMap);
     }
@@ -82,7 +82,7 @@ public class MyMessageReceiver extends MessageReceiver {
         Map hashMap = new HashMap();
         hashMap.put("title", title);
         hashMap.put("summary", summary);
-        hashMap.put("event", "onNotificationOpened");
+        hashMap.put("event", "onNotificationReceivedInApp");
         hashMap.put("extraMap", map);
         DalipushPlugin.getInstance().sink(hashMap);
     }

@@ -32,7 +32,7 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
 
     private static DalipushPlugin dalipushPlugin;
 
-    private ArrayList<Map> events = new ArrayList<Map>();
+    private static ArrayList<Map> events = new ArrayList<Map>();
 
     private EventChannel.EventSink eventSink;
 
@@ -49,10 +49,10 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
-        Log.e("DalipushPlugin", "registerWith() called with: registrar = [" + registrar + "]");
+        Log.i("DalipushPlugin", "registerWith() called with: registrar = [" + registrar + "]");
         final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "dalipush");
         final EventChannel eventChannel = new EventChannel(registrar.messenger(), "dalipush_event");
-        Log.e("DalipushPlugin", "eventChannel called with: registrar = [" + eventChannel + "]");
+        Log.i("DalipushPlugin", "eventChannel called with: registrar = [" + eventChannel + "]");
         dalipushPlugin = new DalipushPlugin();
         methodChannel.setMethodCallHandler(dalipushPlugin);
         eventChannel.setStreamHandler(dalipushPlugin);
@@ -300,8 +300,9 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
 
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
-        Log.e("DalipushPlugin", "onListen() called with: o = [" + o + "], eventSink = [" + eventSink + "]");
+        Log.i("DalipushPlugin", "onListen() called with: events = [" +  o + "], eventSink = [" + eventSink + "]");
         this.eventSink = eventSink;
+
         if (!events.isEmpty()) {
             for(Map m : events) {
                 eventSink.success(m);
@@ -312,7 +313,7 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
 
     @Override
     public void onCancel(Object o) {
-        Log.e("DalipushPlugin", "onCancel() called with: o = [" + o + "], eventSink = [" + eventSink + "]");
+        Log.i("DalipushPlugin", "onCancel() called with: o = [" + o + "], eventSink = [" + eventSink + "]");
         this.eventSink = null;
 
     }
@@ -322,11 +323,12 @@ public class DalipushPlugin implements MethodCallHandler, EventChannel.StreamHan
             try{
                 this.eventSink.success(map);
             } catch (Exception e) {
-                Log.e("DalipushPlugin", "eventSink call exception" + e.getMessage());
+                Log.i("DalipushPlugin", "eventSink call exception" + e.getMessage());
                 events.add(map);
             }
         } else {
             events.add(map);
+            Log.i("DalipushPlugin", "events added" + events.size());
         }
 
     }
