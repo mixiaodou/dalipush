@@ -150,6 +150,6 @@ class Message {
     return null;
   }
   factory Message.fromJson(json) {
-    return Message(json["event"] as String, json["title"] as String, json["summary"] as String, Map.from(json["extraMap"]) );
+    return Message(json["event"] as String, json["title"] as String, json["summary"] as String, Map.from(json["extraMap"]??{}) );
   }
 }
